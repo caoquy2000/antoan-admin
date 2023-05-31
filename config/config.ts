@@ -95,6 +95,18 @@ export default defineConfig({
       ],
     },
     {
+      path: '/dich-vu',
+      name: 'Dịch Vụ',
+      icon: 'profile',
+      component: './dichvu',
+    },
+    {
+      path: '/tin-tuc',
+      name: 'Tin Tức',
+      icon: 'form',
+      component: './tin-tuc',
+    },
+    {
       path: '/form',
       icon: 'form',
       name: 'form',
