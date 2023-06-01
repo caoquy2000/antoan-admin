@@ -57,6 +57,37 @@ const AddNews: React.FC = () => {
         }
     };
 
+    const handleUploadImgInEditor = async (file: any) => {
+        const isImage = file.type.indexOf('image/') === 0;
+        if (!isImage) {
+            setLoadingUploadImgFirebase(false);
+            message.destroy();
+            message.error('Chỉ có thể Upload HÌNH ẢNH!');
+            return isImage;
+        }
+        const isLt4M = file.size / 1024 / 1024 < 4;
+        if (!isLt4M) {
+            message.error('Kích thước hình ảnh phải nhỏ hơn 4MB!');
+            return isLt4M;
+        }
+        try {
+            setLoadingUploadImgFirebase(true);
+            const imgLink = await uploadFile(file, 'newsbody');
+            if (imgLink) {
+                setLoadingUploadImgFirebase(false);
+                message.success('Upload hình ảnh thành công!')
+                return {
+                    data: {
+                        link: imgLink,
+                    },
+                };
+            }
+        } catch (error) {
+            setLoadingUploadImgFirebase(false);
+            console.log('error at upload img in editor -> add news page: ', error);
+        }
+    };
+
     return (
         <React.Fragment>
             <div className={styles.page_warpper}>
@@ -66,6 +97,7 @@ const AddNews: React.FC = () => {
                     imgLinkBanner={linkBannerImgFirebase}
                     handleUploadFile={handleUploadFile}
                     handleSubmitAddNews={handleSubmitAddNews}
+                    handleUploadImgEditor={handleUploadImgInEditor}
                 />
             </div>
         </React.Fragment>
