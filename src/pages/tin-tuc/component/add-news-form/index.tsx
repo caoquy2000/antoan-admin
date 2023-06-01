@@ -1,14 +1,17 @@
-import { toolbarEditor } from '@/components/EditorToolbar';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import ProForm, { ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import { Upload } from 'antd';
+import { Button, Upload } from 'antd';
 import { EditorState, convertToRaw } from 'draft-js';
 import React, { useRef } from 'react';
-import { Editor } from 'react-draft-wysiwyg';
-import draftToHtml from 'draftjs-to-html';
 
 //editor 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
+
+//style
+import styles from './index.less';
+import { toolbarEditor } from '@/components/EditorToolbar';
 
 interface AddNewsFormProps {
     handleSubmitAddNews: (values: any) => any;
@@ -43,6 +46,16 @@ const AddNewsForm = (props: AddNewsFormProps) => {
         setEditorValue(value);
     };
 
+    const handleButtonSubmit = (value: any) => {
+        if (value) {
+            value.form?.submit();
+        }
+    };
+
+    const handleButtonReset = (value: any) => {
+   
+    };
+
     const uploadButton = (
         <div>
             {loadingUploadImg ? <LoadingOutlined /> : <PlusOutlined />}
@@ -61,20 +74,46 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                 onFinish={
                     (values) => handleSubmitAddNews(values)
                 }
+                submitter={{
+                    render: (props, doms) => {
+                        return [
+                           <React.Fragment>
+                                <div className={styles.button_wrapper}>
+                                    <div className={styles.button_left}>
+                                        <Button
+                                            key={'submit'}
+                                            type='primary'
+                                            onClick={() => handleButtonSubmit(props)}
+                                        >
+                                            Tạo Mới
+                                        </Button>
+                                    </div>
+                                    <div>
+                                        <Button
+                                            key={'reset'}
+                                            type='ghost'
+                                            onClick={() => handleButtonReset(props)}
+                                        >
+                                            Reset
+                                        </Button>
+                                    </div>
+                                </div>
+                           </React.Fragment>
+                        ];
+                    },
+                }}
             >
-                <ProForm.Group>
+                <ProForm.Group title={'Tiêu Đề Page:'}>
                     <ProFormText 
                         width={'lg'}
                         name={'titlePage'}
-                        label={'Tiêu Đề Trang:'}
                         placeholder={'Nhập tiêu đề trang...'}
                     />
                 </ProForm.Group>
-                <ProForm.Group>
+                <ProForm.Group title={'Tiêu Đề Bài Viết:'}>
                     <ProFormText 
                         width={'lg'}
                         name={'titleContent'}
-                        label={'Tiêu Đề Bài Viết:'}
                         placeholder={'Nhập tiêu đề bài viết...'}
                     />
                 </ProForm.Group>
@@ -82,11 +121,11 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                     style={{
                         width: '100%',
                     }}
+                    title={'Thẻ MetaDescription:'}
                 >
                     <ProFormTextArea 
                         width={'lg'}
                         name={'metaDescription'}
-                        label={'Thẻ Meta Description:'}
                         placeholder={'Nhập nội dung thẻ meta...'}
                     />
                 </ProForm.Group>
@@ -107,13 +146,15 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                         editorState={editorValue}
                         editorStyle={{
                             width: '100%',
-                            height: '300px',
+                            height: '500px',
                             border: '1px solid #f3f3f3',
                             padding: '10px',
                             lineHeight: '1.0',
                             backgroundColor: '#FEFEFE',
                             fontFamily: 'Mulish',
+                            overflowY: 'hidden',
                           }}
+                        toolbar={toolbarEditor}
                         wrapperClassName="wrapper-class"
                         editorClassName="editor-class"
                         toolbarClassName="toolbar-class"

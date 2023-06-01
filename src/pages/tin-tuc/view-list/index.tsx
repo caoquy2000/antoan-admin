@@ -1,8 +1,8 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import ProTable from "@ant-design/pro-table";
-import { Button, Image, Modal, Space } from "antd";
+import { Anchor, Button, Image, Modal, Space } from "antd";
 import React, { useState } from "react";
-import AddNewsForm from "./component/add-news-form";
+import AddNewsForm from "../component/add-news-form";
 
 const News: React.FC = () => {
     const newsTableRef = React.useRef(null);
@@ -104,6 +104,8 @@ const News: React.FC = () => {
         }
     ]
 
+    const { Link } = Anchor;
+
     const [flagEditAddForm, setFlagEditAddForm] = useState('edit');
     const [showModelForm, setShowModalForm] = useState(false);
 
@@ -142,14 +144,7 @@ const News: React.FC = () => {
                     resetText: 'Reset',
                 }}
                 toolBarRender={(action) => [
-                    <Button 
-                        size="middle"
-                        key="buttonAddService"
-                        icon={<PlusOutlined />}
-                        onClick={() => handleModel()}
-                    >
-                        Thêm
-                    </Button>
+                    <Link href="/tin-tuc/them-moi" title={<PlusOutlined />} />
                 ]}
             />
             {

@@ -82,7 +82,7 @@ export const QuillToolbar = () => (
 );
 
 export const toolbarEditor = {
-  options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'image', 'remove', 'history'],
+  options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'emoji', 'image', 'remove', 'history'],
   inline: {
     inDropdown: false,
     className: undefined,
@@ -112,7 +112,7 @@ export const toolbarEditor = {
     dropdownClassName: undefined,
   },
   fontFamily: {
-    options: ['Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+    options: ['Arial', 'Roboto', 'Oswald'],
     className: undefined,
     component: undefined,
     dropdownClassName: undefined,
@@ -151,19 +151,6 @@ export const toolbarEditor = {
       'rgb(239,239,239)', 'rgb(255,255,255)', 'rgb(250,197,28)', 'rgb(243,121,52)', 'rgb(209,72,65)',
       'rgb(184,49,47)', 'rgb(124,112,107)', 'rgb(209,213,216)'],
   },
-  link: {
-    inDropdown: false,
-    className: undefined,
-    component: undefined,
-    popupClassName: undefined,
-    dropdownClassName: undefined,
-    showOpenOptionOnHover: true,
-    defaultTargetOption: '_self',
-    options: ['link', 'unlink'],
-    link: { icon: undefined, className: undefined },
-    unlink: { icon: undefined, className: undefined },
-    linkCallback: undefined
-  },
   emoji: {
     icon: undefined,
     className: undefined,
@@ -180,17 +167,6 @@ export const toolbarEditor = {
       '🎉', '🎊', '🎁', '🎗', '🏀', '🏈', '🎲', '🔇', '🔈', '📣', '🔔', '🎵', '🎷', '💰', '🖊', '📅',
       '✅', '❎', '💯',
     ],
-  },
-  embedded: {
-    icon: undefined,
-    className: undefined,
-    component: undefined,
-    popupClassName: undefined,
-    embedCallback: undefined,
-    defaultSize: {
-      height: 'auto',
-      width: 'auto',
-    },
   },
   image: {
     icon: undefined,

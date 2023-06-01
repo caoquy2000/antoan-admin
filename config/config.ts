@@ -104,7 +104,24 @@ export default defineConfig({
       path: '/tin-tuc',
       name: 'Tin Tức',
       icon: 'form',
-      component: './tin-tuc',
+      access: 'admin',
+      routes: [
+        {
+          path: '/tin-tuc',
+          redirect: '/tin-tuc/danh-sach',
+        },
+        {
+          path: '/tin-tuc/danh-sach',
+          access: 'admin',
+          component: './tin-tuc/view-list',
+        },
+        {
+          path: '/tin-tuc/them-moi',
+          access: 'admin',
+          hiddenInMenu: true,
+          component: './tin-tuc/add-news'
+        }
+      ]
     },
     {
       path: '/form',
