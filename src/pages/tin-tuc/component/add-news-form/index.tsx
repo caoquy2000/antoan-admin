@@ -1,8 +1,8 @@
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import ProForm, { ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import { Button, Upload } from 'antd';
+import ProForm, { ProFormInstance, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import { Button, Image, Upload } from 'antd';
 import { EditorState, convertToRaw } from 'draft-js';
-import React, { useRef } from 'react';
+import React, { MutableRefObject, useRef } from 'react';
 
 //editor 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -14,6 +14,9 @@ import styles from './index.less';
 import { toolbarEditor } from '@/components/EditorToolbar';
 
 interface AddNewsFormProps {
+    formRef: MutableRefObject<ProFormInstance<Record<string, any>>>;
+    imgLinkBanner: string;
+    handleUploadFile: (value: any) => any;
     handleSubmitAddNews: (values: any) => any;
 }
 
@@ -21,10 +24,12 @@ interface AddNewsFormProps {
 const AddNewsForm = (props: AddNewsFormProps) => {
 
     const {
-        handleSubmitAddNews
+        formRef,
+        imgLinkBanner,
+        handleUploadFile,
+        handleSubmitAddNews,
     } = props;
 
-    const formRef = useRef<any>(null);
     const editorRef = useRef<any>(null);
 
     const [editorValue, setEditorValue] = React.useState<EditorState>(() => EditorState.createEmpty());
@@ -129,16 +134,42 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                         placeholder={'Nhập nội dung thẻ meta...'}
                     />
                 </ProForm.Group>
-                <ProForm.Group title={'Hình Banner'}>
-                    <Upload
-                         name="avatar"
-                         listType="picture-card"
-                         className="avatar-uploader"
-                         showUploadList={false}
-                         action=""
+                <ProForm.Group 
+                    title={'Hình Banner'}
+                    style={{
+                        gap: '0',
+                    }}
+                >
+                    <ProForm.Item
+                        style={{
+                            display: 'none',
+                        }}
                     >
-                        {uploadButton}
-                    </Upload>
+                        <ProFormText 
+                            key={'uploadBanner'}
+                            name={'uploadBannerImg'}
+                        />
+                    </ProForm.Item>
+                    {
+                        imgLinkBanner ? 
+                        (
+                            <Image
+                                width={250}
+                                src={imgLinkBanner}
+                            />
+                        )
+                        : 
+                        (
+                            <Upload
+                                name="avatar"
+                                listType="picture-card"
+                                className="avatar-uploader"
+                                customRequest={handleUploadFile}
+                            >
+                                {uploadButton}
+                            </Upload>
+                        )
+                    }
                 </ProForm.Group>
                 <ProForm.Group title={'Nội dung bài viết'}>
                     <Editor 
@@ -166,9 +197,6 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                         }}
                     >
                         <ProFormTextArea
-                            style={{
-                                display: 'none !important',
-                            }}
                             name={'editorContent'}
                             disabled
                         />

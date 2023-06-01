@@ -147,34 +147,6 @@ const News: React.FC = () => {
                     <Link href="/tin-tuc/them-moi" title={<PlusOutlined />} />
                 ]}
             />
-            {
-                flagEditAddForm === 'edit' ? (
-                    <Modal
-                        open={showModelForm}
-                        title='Tạo Tin Tức'
-                        centered={true}
-                        width={900}
-                        onCancel={() => handleCancelModal()}
-                        footer={[
-                            <Button 
-                                key='cancelModel' 
-                                type='ghost'
-                                onClick={() => handleCancelModal()}
-                            >
-                                Đóng
-                            </Button>
-                        ]}
-                    >
-                        <AddNewsForm
-                            handleSubmitAddNews={handleSubmitAddNews}
-                        />
-                    </Modal>
-                ) : (
-                    <Modal>
-
-                    </Modal>
-                )
-            }
         </React.Fragment>
     );
 };
