@@ -1,10 +1,11 @@
-import React, { MutableRefObject, useState } from "react";
+import React, { useState } from "react";
 import AddNewsForm from "../component/add-news-form";
 
 import styles from './index.less';
 import { message } from "antd";
 import { uploadFile } from "@/utils/uploadFile";
-import { ProFormInstance } from "@ant-design/pro-form";
+import { db } from "@/utils/firebase";
+import { collection } from "@/utils/variable";
 
 const AddNews: React.FC = () => {
 
@@ -25,6 +26,15 @@ const AddNews: React.FC = () => {
 
     const handleSubmitAddNews = (value: any) => {
         console.log('Test Add service: ', value);
+        db.collection(collection.news)
+            .doc(value.idPath)
+            .set(value)
+            .then(() => {
+                message.success('Thêm bài viết thành công!');
+            })
+            .catch(() => {
+                message.error('Thêm bài viết thất bại!');
+            });
     };
 
     const handleUploadFile = async ({ onError, onSuccess, file }: any) => {

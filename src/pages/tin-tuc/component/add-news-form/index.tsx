@@ -143,6 +143,17 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                     },
                 }}
             >
+                 <ProForm.Group title={'Path:'}>
+                    <ProFormText 
+                        width={'lg'}
+                        name={'idPath'}
+                        placeholder={'Nhập đường dẫn cho bài viết...'}
+                        // rules={[{
+                        //     required: true,
+                        //     message: 'Nhập tiêu đề trước khi tạo bài viết!'
+                        // }]}
+                    />
+                </ProForm.Group>
                 <ProForm.Group title={'Tiêu Đề Page:'}>
                     <ProFormText 
                         width={'lg'}
@@ -186,7 +197,7 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                     direction='vertical'
                 >
                     {
-                        imgLinkBanner ? 
+                        imgLinkBanner !== null && imgLinkBanner !== undefined && imgLinkBanner !== '' ? 
                         (
                             <Image
                                 width={250}

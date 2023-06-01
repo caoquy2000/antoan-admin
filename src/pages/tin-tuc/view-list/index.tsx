@@ -1,8 +1,11 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import ProTable from "@ant-design/pro-table";
 import { Anchor, Button, Image, Modal, Space } from "antd";
-import React, { useState } from "react";
+import React, { ReactText, useState } from "react";
 import AddNewsForm from "../component/add-news-form";
+import { db } from "@/utils/firebase";
+import { collection } from "@/utils/variable";
+import { SortOrder } from "antd/lib/table/interface";
 
 const News: React.FC = () => {
     const newsTableRef = React.useRef(null);
@@ -18,7 +21,7 @@ const News: React.FC = () => {
         },
         {
             title: 'Tiêu Đề Tin Tức',
-            dataIndex: 'name',
+            dataIndex: 'titleContent',
             copyable: true,
             sorter: (a: any, b:any) => a.name.localCompare(b.name),
             filters: true,
@@ -36,14 +39,14 @@ const News: React.FC = () => {
         },
         {
             title: 'Banner',
-            dataIndex: 'banner',
+            dataIndex: 'uploadBannerImg',
             copyable: false,
             search: false,
             align: 'center',
             render: (_:any, record:any) => {
                 return (
                     <Space>
-                        <Image width={50} src={record.banner}  />
+                        <Image width={50} src={record.uploadBannerImg}  />
                     </Space>
                 )
             },
@@ -146,6 +149,17 @@ const News: React.FC = () => {
                 toolBarRender={(action) => [
                     <Link href="/tin-tuc/them-moi" title={<PlusOutlined />} />
                 ]}
+                request={ async (params: any, 
+                    sort: Record<string, SortOrder>, 
+                    filter: Record<string, ReactText[] | null>) => {
+                    let data = await db.collection(collection.news).get();
+                    console.log('data', data);
+                    return {
+                        data: data.docs.map((doc, index) => ({...doc.data(), number: index + 1})),
+                        success: true,
+                        total: data.size,
+                    }
+                }}
             />
         </React.Fragment>
     );
