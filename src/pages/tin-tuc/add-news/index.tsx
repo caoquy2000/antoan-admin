@@ -25,14 +25,16 @@ const AddNews: React.FC = () => {
     }, [loadingUploadImgFirebase]);
 
     const handleSubmitAddNews = (value: any) => {
-        console.log('Test Add service: ', value);
+        setLoadingUploadImgFirebase(true);
         db.collection(collection.news)
             .doc(value.idPath)
             .set(value)
             .then(() => {
+                setLoadingUploadImgFirebase(false);
                 message.success('Thêm bài viết thành công!');
             })
             .catch(() => {
+                setLoadingUploadImgFirebase(false);
                 message.error('Thêm bài viết thất bại!');
             });
     };

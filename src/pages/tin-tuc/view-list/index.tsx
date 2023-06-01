@@ -17,7 +17,7 @@ const News: React.FC = () => {
             sorter: (a: any, b: any) => a.number - b.number,
             search: false,
             align: 'center',
-            width: '15%',
+            width: '5%',
         },
         {
             title: 'Tiêu Đề Tin Tức',
@@ -35,7 +35,17 @@ const News: React.FC = () => {
                     }
                 ]
             },
-            width: '35%',
+            width: '25%',
+        },
+        {
+            title: 'Đường Dẫn',
+            dataIndex: 'idPath',
+            copyable: true,
+            sorter: (a: any, b:any) => a.name.localCompare(b.name),
+            filters: true,
+            onFilter: true,
+            align: 'center',
+            width: '25%',
         },
         {
             title: 'Banner',
@@ -70,7 +80,15 @@ const News: React.FC = () => {
                     >
                         <div
                             style={{
-                                width: '50%',
+                                width: '30%',
+                                marginRight: '8px',
+                            }}
+                        >
+                            <Link href={`${record.idPath}`} title={'Xem'} />
+                        </div>
+                        <div
+                            style={{
+                                width: '30%',
                                 marginRight: '8px',
                             }}
                         >
@@ -87,7 +105,7 @@ const News: React.FC = () => {
                         </div>
                         <div
                             style={{
-                                width: '50%',
+                                width: '30%',
                             }}
                         >
                             <Button

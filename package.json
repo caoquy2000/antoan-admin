@@ -65,6 +65,7 @@
     "bizcharts-plugin-slider": "^2.1.1-beta.1",
     "caniuse-lite": "^1.0.30001489",
     "classnames": "^2.3.0",
+    "dompurify": "^3.0.3",
     "draft-convert": "^2.1.13",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
@@ -95,6 +96,7 @@
   "devDependencies": {
     "@ant-design/pro-cli": "^2.1.0",
     "@playwright/test": "^1.17.0",
+    "@types/dompurify": "^3.0.2",
     "@types/draft-convert": "^2.1.4",
     "@types/draftjs-to-html": "^0.8.1",
     "@types/express": "^4.17.0",

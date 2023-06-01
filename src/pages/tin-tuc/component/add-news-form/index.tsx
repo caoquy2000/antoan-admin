@@ -148,10 +148,10 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                         width={'lg'}
                         name={'idPath'}
                         placeholder={'Nhập đường dẫn cho bài viết...'}
-                        // rules={[{
-                        //     required: true,
-                        //     message: 'Nhập tiêu đề trước khi tạo bài viết!'
-                        // }]}
+                        rules={[{
+                            required: true,
+                            message: 'Nhập tiêu đề trước khi tạo bài viết!'
+                        }]}
                     />
                 </ProForm.Group>
                 <ProForm.Group title={'Tiêu Đề Page:'}>
@@ -159,10 +159,10 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                         width={'lg'}
                         name={'titlePage'}
                         placeholder={'Nhập tiêu đề trang...'}
-                        // rules={[{
-                        //     required: true,
-                        //     message: 'Nhập tiêu đề trước khi tạo bài viết!'
-                        // }]}
+                        rules={[{
+                            required: true,
+                            message: 'Nhập tiêu đề trước khi tạo bài viết!'
+                        }]}
                     />
                 </ProForm.Group>
                 <ProForm.Group title={'Tiêu Đề Bài Viết:'}>
@@ -170,10 +170,10 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                         width={'lg'}
                         name={'titleContent'}
                         placeholder={'Nhập tiêu đề bài viết...'}
-                        // rules={[{
-                        //     required: true,
-                        //     message: 'Nhập tiêu đề trước khi tạo bài viết!'
-                        // }]}
+                        rules={[{
+                            required: true,
+                            message: 'Nhập tiêu đề trước khi tạo bài viết!'
+                        }]}
                     />
                 </ProForm.Group>
                 <ProForm.Group 
@@ -186,10 +186,10 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                         width={'lg'}
                         name={'metaDescription'}
                         placeholder={'Nhập nội dung thẻ meta...'}
-                        // rules={[{
-                        //     required: true,
-                        //     message: 'Nhập nội dung thẻ meta trước khi tạo bài viết!'
-                        // }]}
+                        rules={[{
+                            required: true,
+                            message: 'Nhập nội dung thẻ meta trước khi tạo bài viết!'
+                        }]}
                     />
                 </ProForm.Group>
                 <ProForm.Group 
@@ -226,10 +226,10 @@ const AddNewsForm = (props: AddNewsFormProps) => {
                             key={'altImgBanner'}
                             name={'altImgBanner'}
                             placeholder={'Nhập mô tả cho hình ảnh...'}
-                            // rules={[{
-                            //     required: true,
-                            //     message: 'Nhập mô tả cho banner trước khi tạo bài viết!'
-                            // }]}
+                            rules={[{
+                                required: true,
+                                message: 'Nhập mô tả cho banner trước khi tạo bài viết!'
+                            }]}
                         />
                     </ProForm.Item>
                     <ProForm.Item

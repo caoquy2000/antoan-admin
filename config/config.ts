@@ -120,6 +120,12 @@ export default defineConfig({
           access: 'admin',
           hiddenInMenu: true,
           component: './tin-tuc/add-news'
+        }, 
+        {
+          path: '/tin-tuc/:newsId',
+          access: 'admin',
+          hiddenInMenu: true,
+          component: './tin-tuc/view-detail/[newsId]',
         }
       ]
     },
