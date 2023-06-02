@@ -1,7 +1,7 @@
 import { LoadingOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import ProForm, { ProFormInstance, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import { Button, Image, InputProps, Upload, UploadProps } from 'antd';
-import { ContentState, EditorState, RichUtils, convertToRaw } from 'draft-js';
+import { Button, Image, InputProps, Upload, UploadProps, message } from 'antd';
+import { ContentState, DraftEntityType, EditorState, RichUtils, convertFromHTML, convertToRaw } from 'draft-js';
 import React, { MutableRefObject, useRef } from 'react';
 
 //editor 
@@ -14,6 +14,7 @@ import styles from './index.less';
 import { toolbarEditor } from '@/components/EditorToolbar';
 import mammoth from 'mammoth';
 import { fileToByteArray } from '@/utils/fileToByteArray';
+import { uploadBase64 } from '@/utils/uploadFile';
 
 interface AddNewsFormProps {
     formRef: MutableRefObject<ProFormInstance<Record<string, any>>>;
@@ -38,14 +39,33 @@ const AddNewsForm = (props: AddNewsFormProps) => {
 
     const [editorValue, setEditorValue] = React.useState<EditorState>(() => EditorState.createEmpty());
     const [loadingUploadImg, setLoadingUploadImg] = React.useState(false);
+    const [loadingUploadDocx, setLoadingUploadDocx] = React.useState(false);
 
     React.useEffect(() => {
         if (formRef !== null) {
         //    let htmlContent = convertToHTML(editorValue.getCurrentContent());
-            let htmlContent = draftToHtml(convertToRaw(editorValue.getCurrentContent()));
+            let raw = convertToRaw(editorValue.getCurrentContent());
+            console.log('raw   ---- ', raw);
+            let htmlContent = draftToHtml(raw, undefined, false, customEntityTransform);
+            console.log('htmlContent use effect', htmlContent);
            formRef?.current?.setFieldValue('editorContent', htmlContent);
         }
     }, [editorValue]);
+    React.useEffect(() => {
+        if (loadingUploadDocx) {
+            message.loading('Đang tải...', 9999);
+        } else {
+            message.destroy();
+        }
+        return () => {
+            message.destroy();
+        };
+    }, [loadingUploadDocx]);
+
+    const customEntityTransform = (entity: any, text: string) => {
+        if (entity.type !== "IMAGE") return;
+        return `<figure style="text-align:center"><img src="${entity.data.src}" alt="${entity.data.alt}" style="max-width:100%;height:auto;${entity.data.style}" /></figure>`
+    };
 
     const onChangeValueEditor = (editorState: EditorState) => {
         setEditorValue(editorState);
@@ -75,23 +95,72 @@ const AddNewsForm = (props: AddNewsFormProps) => {
     };
 
     const onUploadFile = async (info: any) => {
+        setLoadingUploadDocx(true);
         let byteArray = await fileToByteArray(info);
-        mammoth.convertToHtml({arrayBuffer: byteArray})
+        let options = {
+            convertImage: mammoth.images.imgElement((image: any) => {
+                return image.read("base64").then(async (imageBuffer: any) => {
+                    console.log('image, ', image);
+                    const urlImg = await uploadBase64('newscontent', imageBuffer);
+                    return {
+                        src: urlImg
+                    };
+                })
+            })
+        }
+        mammoth.convertToHtml({arrayBuffer: byteArray}, options)
             .then((result) => {
                 let html = result.value;
                 let message = result.messages;
+                console.log('html -> ', html);
                 setEditorValue(htmlToDraftBlock(html));
+                setLoadingUploadDocx(false);
             })
             .catch((error) => {
                 console.log('convert error ', error);
+                setLoadingUploadDocx(false);
             });
     };
 
     const htmlToDraftBlock = (html: any) => {
-        const blockFromHtml = htmlToDraft(html);
+        const blockFromHtml = htmlToDraft(html, (nodeName, node) => {
+            if (nodeName === 'img' && node instanceof HTMLImageElement) {
+                const entityConfig = {
+                    alignment: '',
+                    src: '',
+                    alt: '',
+                };
+                const parentElement = node.parentElement;
+                if (parentElement?.style.float) {     
+                    entityConfig.alignment = parentElement.style.float;
+                } else if (parentElement?.style.textAlign) {  
+                    entityConfig.alignment = parentElement.style.textAlign;
+                }
+
+                entityConfig.src = node.getAttribute
+                    ? node.getAttribute('src') || node.src
+                    : node.src;
+                entityConfig.alt = node.alt;
+                const data = {
+                    ...entityConfig,
+                    style: node.style.cssText,
+                };
+                console.log('data -> ', data);
+                return {
+                    type: 'IMAGE',
+                    mutability: 'MUTABLE',
+                    data: data
+                };
+            }
+        });
+        console.log('block form html -> ', blockFromHtml);
         const { contentBlocks, entityMap } = blockFromHtml;
+        console.log('contentBlock', contentBlocks);
+        console.log('enttity Map', entityMap);
         const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+        console.log('content state', contentState);
         const editorState = EditorState.createWithContent(contentState);
+        console.log('editor state', editorState);
         return editorState;
     };
 
